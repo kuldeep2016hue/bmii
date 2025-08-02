@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple To-Do List</title>
+    <style>
+        /* Basic styles for the body */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Main container for the app */
+        #app-container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 400px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Header style */
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        /* Input and button container */
+        #input-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Task input field */
+        #task-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #dcdfe6;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        #task-input:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+
+        /* Add task button */
+        #add-task-btn {
+            padding: 10px 20px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        #add-task-btn:hover {
+            background-color: #357abd;
+        }
+
+        /* Unordered list for tasks */
+        #task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+
+        /* Individual list items (tasks) */
+        .task-item {
+            background: #f9fafb;
+            padding: 12px 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .task-item:hover {
+            background-color: #f0f2f5;
+        }
+
+        /* Style for completed tasks */
+        .task-item.completed {
+            text-decoration: line-through;
+            color: #90a4ae;
+            background-color: #e8f5e9;
+        }
+        
+        /* Instructions text */
+        #instructions {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <h1>My To-Do List</h1>
+        <div id="input-area">
+            <input type="text" id="task-input" placeholder="Add a new task...">
+            <button id="add-task-btn">Add</button>
+        </div>
+        <ul id="task-list">
+            <!-- Tasks will be added here by JavaScript -->
+        </ul>
+        <p id="instructions">Click to complete, double-click to remove.</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get necessary elements from the DOM
+            const taskInput = document.getElementById('task-input');
+            const addTaskBtn = document.getElementById('add-task-btn');
+            const taskList = document.getElementById('task-list');
+
+            // Function to add a new task
+            const addTask = () => {
+                const taskText = taskInput.value.trim(); // Get text and remove whitespace
+
+                // Don't add if the input is empty
+                if (taskText === '') {
+                    alert("Please enter a task!");
+                    return;
+                }
+
+                // Create a new list item (li) element
+                const li = document.createElement('li');
+                li.className = 'task-item'; // Assign a class for styling
+                li.textContent = taskText; // Set its text content
+
+                // Event listener to mark a task as completed on a single click
+                li.addEventListener('click', () => {
+                    li.classList.toggle('completed');
+                });
+
+                // Event listener to remove a task on a double click
+                li.addEventListener('dblclick', () => {
+                    taskList.removeChild(li);
+                });
+
+                // Add the new task to the list
+                taskList.appendChild(li);
+
+                // Clear the input field for the next task
+                taskInput.value = '';
+                taskInput.focus(); // Set focus back to the input field
+            };
+
+            // Add task when the 'Add' button is clicked
+            addTaskBtn.addEventListener('click', addTask);
+
+            // Add task when the 'Enter' key is pressed in the input field
+            taskInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    addTask();
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
